@@ -55,9 +55,9 @@
             document.getElementById('result').textContent = '请求中...';
             
             // 使用CORS代理绕过限制（可选）
-            const proxyUrl = `https://cors-anywhere.herokuapp.com/${url}`;
+            //const proxyUrl = `https://cors-anywhere.herokuapp.com/${url}`;
             // 也可以直接使用目标URL（但可能遇到CORS问题）
-            // const proxyUrl = url;
+            const proxyUrl = url;
             
             fetch(proxyUrl)
                 .then(response => {
