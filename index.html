@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GitHub 请求中转站</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input {
+            padding: 8px;
+            width: 100%;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #2ea44f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>GitHub 请求中转站</h1>
+    <div class="container">
+        <input type="text" id="url" placeholder="输入目标URL (如: https://api.example.com/data)" value="https://jsonplaceholder.typicode.com/todos/1">
+        <button onclick="fetchData()">发送请求</button>
+        <h3>响应结果:</h3>
+        <pre id="result">点击按钮发送请求...</pre>
+    </div>
+
+    <script>
+        function fetchData() {
+            const url = document.getElementById('url').value;
+            if (!url) {
+                alert('请输入URL');
+                return;
+            }
+            
+            document.getElementById('result').textContent = '请求中...';
+            
+            // 使用CORS代理绕过限制（可选）
+            const proxyUrl = `https://cors-anywhere.herokuapp.com/${url}`;
+            // 也可以直接使用目标URL（但可能遇到CORS问题）
+            // const proxyUrl = url;
+            
+            fetch(proxyUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = `错误: ${error.message}`;
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
